@@ -1,0 +1,84 @@
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+nav {
+    background-color: rgb(48, 139, 219);
+    width: 100vw;
+    height: 3rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 30rem;
+    padding-right: 30rem;
+    margin-bottom: 1.5rem;
+}
+
+nav>a{
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+main {
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.book-list-item{
+    width: 30rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: antiquewhite;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.2rem;
+}
+.book-list-item>h3, .book-list-item>p, .book-list-item>button {
+    grid-column: 1/2;
+}
+
+.book-list-item>img{
+    grid-column: 2/3;
+    grid-row: 1/8;
+    max-width: 15rem;
+    max-height: 20rem;
+    width: auto;
+    height: auto;
+}
+
+#addBookForm, #edit-form {
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3rem;
+}
+
+input[type="submit"], button {
+    background-color: rgb(26, 119, 7);
+    color: white;
+    font-weight: 900;
+    border-radius: 0.5rem;
+    width: 10rem;
+    height: 1.5rem;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+    margin-top: 1rem;
+}
