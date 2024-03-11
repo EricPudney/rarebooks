@@ -38,6 +38,7 @@ ul {
     width: 30rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-auto-rows: min-content;
     background-color: antiquewhite;
     padding: 1rem;
     margin: 1rem;
@@ -49,7 +50,7 @@ ul {
 
 .book-list-item>img{
     grid-column: 2/3;
-    grid-row: 1/8;
+    grid-row: 1/11;
     max-width: 15rem;
     max-height: 20rem;
     width: auto;

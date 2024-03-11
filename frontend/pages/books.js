@@ -11,6 +11,9 @@ export default async function books() {
         <p>Subject: ${book.subject}</p>
         <p>Price (SEK): ${book.price}</p>
         <p>Date printed: ${book.publicationDate}</p>
+        <p>Binding: ${book.binding}</p>
+        <p>Condition: ${book.condition}</p>
+        <p>Notes: ${book.notes}</p>
         <button class="edit-button" onclick="editBook('${book._id}'); return false">Edit</button>
         <img src="${book.imgURL}" loading="lazy">
         </div>
@@ -25,6 +28,7 @@ export default async function books() {
         <option value="">--Subject--</option>
         <option value="History">History</option>
         <option value="Poetry">Poetry</option>
+        <option value="Literature">Literature</option>
         <option value="Drama">Drama</option>
         <option value="Theology">Theology</option>
         <option value="Philosophy">Philosophy</option>
@@ -51,6 +55,9 @@ async function filterSubject() {
             <p>Subject: ${book.subject}</p>
             <p>Price (SEK): ${book.price}</p>
             <p>Date printed: ${book.publicationDate}</p>
+            <p>Binding: ${book.binding}</p>
+            <p>Condition: ${book.condition}</p>
+            <p>Notes: ${book.notes}</p>
             <button class="edit-button" onclick="editBook('${book._id}'); return false">Edit</button>
             <img src="${book.imgURL}" loading="lazy">
             </div>
@@ -76,9 +83,15 @@ async function editBook(id) {
     <input id="price" name="price" type="number" value='${result.price}'/><br/>
     <label for="publicationDate">Date printed:</label>
     <input id="publicationDate" name="publicationDate" type="number" value='${result.publicationDate}'/><br/>
+    <label for="binding">Binding:</label>
+    <input id="binding" name="binding" value='${result.binding}'/><br/>
+    <label for="condition">Condition:</label>
+    <input id="condition" name="condition" value='${result.condition}'/><br/>
+    <label for="notes">Notes:</label>
+    <input id="notes" name="notes" value='${result.notes}'/><br/>
     <label for="imgURL">Image URL:</label>
     <input id="imgURL" name="imgURL" value='${result.imgURL}'/><br/>
-    <input type="submit" value="Update"/>
+    <input id="update-btn" type="submit" value="Update"/>
     </form>
     <br />
     <p id="result-text">
@@ -96,6 +109,9 @@ async function updateBook(id) {
             price: $('[name=price]').val(),
             subject: $('[name=subject]').val(),
             publicationDate: $('[name=publicationDate]').val(),
+            binding: $('[name=binding]').val(),
+            condition: $('[name=condition]').val(),
+            notes: $('[name=notes]').val(),
             imgURL: $('[name=imgURL]').val()
         }
     const result = await fetch (`/api/books/${id}`, {
@@ -105,11 +121,15 @@ async function updateBook(id) {
         })
     const response = await result.json();
     $('#result-text').text(response.message);
+    $('#update-btn').hide()
     $('[name=title]').val(""),
     $('[name=author]').val(""),
     $('[name=price]').val(""),
     $('[name=subject]').val(""),
     $('[name=publicationDate]').val(""),
+    $('[name=binding]').val(""),
+    $('[name=condition]').val(""),
+    $('[name=notes]').val(""),
     $('[name=imgURL]').val("")
     $(".form-container").append("<button onclick='reloadPage()'>Back</button>")
 }

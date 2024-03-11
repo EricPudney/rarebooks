@@ -6,6 +6,9 @@ const bookSchema = mongoose.Schema({
   price: Number,
   subject: String,
   publicationDate: Number,
+  binding: String,
+  condition: String,
+  notes: String,
   imgURL: String
 })
 

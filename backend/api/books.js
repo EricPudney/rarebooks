@@ -28,6 +28,9 @@ export default function (server) {
             price: req.body.price,
             subject: req.body.subject,
             publicationDate: req.body.publicationDate,
+            binding: req.body.binding,
+            condition: req.body.condition,
+            notes: req.body.notes,
             imgURL: req.body.imgURL
           })
           const savedBook = await newBook.save()
@@ -46,6 +49,9 @@ export default function (server) {
             "price": req.body.price,
             "subject": req.body.subject,
             "publicationDate": req.body.publicationDate,
+            binding: req.body.binding,
+            condition: req.body.condition,
+            notes: req.body.notes,
             "imgURL": req.body.imgURL 
           }})
           res.status(200).json({message: "Book details successfully updated."})

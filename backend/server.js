@@ -9,7 +9,7 @@ const port = 3000;
 server.use(express.json());
 server.use(express.static("../frontend"));
 
-mongoose.connect("mongodb+srv://*****@cluster0.jidr2xq.mongodb.net/Books");
+mongoose.connect("mongodb+srv://******@cluster0.jidr2xq.mongodb.net/Books");
 
 apiRegister(server)
 
