@@ -3,29 +3,18 @@ export default async function books() {
     const response = await fetch("/api/books");
     const result = await response.json();
     let booklist = "";
+    const list = "";
     for (let book of result) {
-        booklist += `<li>
-        <div class="book-list-item">
-        <h3>${book.title}</h3>
-        <p>By ${book.author}</p>
-        <p>Subject: ${book.subject}</p>
-        <p>Price (SEK): ${book.price}</p>
-        <p>Date printed: ${book.publicationDate}</p>
-        <p>Binding: ${book.binding}</p>
-        <p>Condition: ${book.condition}</p>
-        <p>Notes: ${book.notes}</p>
-        <button class="edit-button" onclick="editBook('${book._id}'); return false">Edit</button>
-        <img src="${book.imgURL}" loading="lazy">
-        </div>
-        </li>`
+        booklist += addToBooklist(book, list)
     }
         return `
     <div id="main-container">
     <h2>My Books</h2>
     <div id="filter-container">
+    <div class="filter">
     <label for="subject-filter">Filter by subject:</label>
     <select name="subject-filter" id="subject-filter" onchange="filterSubject()">
-        <option value="">--Subject--</option>
+        <option value="">--All Subjects--</option>
         <option value="History">History</option>
         <option value="Poetry">Poetry</option>
         <option value="Literature">Literature</option>
@@ -34,6 +23,18 @@ export default async function books() {
         <option value="Philosophy">Philosophy</option>
         <option value="Science">Science</option>
     </select>
+    </div>
+    <div class="filter">
+    <label for="date-filter">Filter by publication date:</label>
+    <select name="date-filter" id="date-filter" onchange="filterDate()">
+        <option value="">--All Dates--</option>
+        <option value="1600">Pre-1700</option>
+        <option value="1700">1700s</option>
+        <option value="1800">1800s</option>
+        <option value="1900">1900s and later</option>
+    </select>
+    </div>
+    
     </div>
     <div>
     <ul id="booklist">${booklist}</ul>
@@ -46,26 +47,55 @@ async function filterSubject() {
     const response = await fetch("/api/books");
     const result = await response.json();
     let booklist = "";
+    const list = "";
     for (let book of result) {
         if (book.subject.indexOf($("#subject-filter").val()) >= 0) {
-            booklist += `<li>
-            <div class="book-list-item">
-            <h3>${book.title}</h3>
-            <p>By ${book.author}</p>
-            <p>Subject: ${book.subject}</p>
-            <p>Price (SEK): ${book.price}</p>
-            <p>Date printed: ${book.publicationDate}</p>
-            <p>Binding: ${book.binding}</p>
-            <p>Condition: ${book.condition}</p>
-            <p>Notes: ${book.notes}</p>
-            <button class="edit-button" onclick="editBook('${book._id}'); return false">Edit</button>
-            <img src="${book.imgURL}" loading="lazy">
-            </div>
-            </li>`
+            booklist += addToBooklist(book, list)
         }
     }
     $("#booklist").html(booklist);
 }
+window.filterSubject = filterSubject;
+
+async function filterDate() {
+    const response = await fetch("/api/books");
+    const result = await response.json();
+    let booklist = "";
+    const list = "";
+    switch ($("#date-filter").val()) {
+        case "":
+            for (let book of result) {
+                booklist += addToBooklist(book, list)
+            }
+            break;
+        case "1600":
+            for (let book of result) {
+                if (parseInt(book.publicationDate) < 1700)
+                {booklist += addToBooklist(book, list)}
+            }
+            break;
+        case "1700":
+            for (let book of result) {
+                if (parseInt(book.publicationDate) < 1800 && parseInt(book.publicationDate) > 1699)
+                {booklist += addToBooklist(book, list)}
+            }
+            break;
+        case "1800":
+            for (let book of result) {
+                if (parseInt(book.publicationDate) < 1900 && parseInt(book.publicationDate) > 1799)
+                {booklist += addToBooklist(book, list)}
+            }
+            break;
+        case "1900":
+            for (let book of result) {
+                if (parseInt(book.publicationDate) > 1899)
+                {booklist += addToBooklist(book, list)}
+            }
+            break;
+    }
+    $("#booklist").html(booklist);
+}
+window.filterDate = filterDate;
 
 async function editBook(id) {
     const response = await fetch(`/api/books/${id}`);
@@ -98,8 +128,6 @@ async function editBook(id) {
     </div>`;
     $("#main-container").html(editForm)
 }
-
-window.filterSubject = filterSubject;
 window.editBook = editBook;
 
 async function updateBook(id) {
@@ -134,29 +162,27 @@ async function updateBook(id) {
     $(".form-container").append("<button onclick='reloadPage()'>Back</button>")
 }
 
+function addToBooklist(book, booklist) {
+    booklist += `<li>
+    <div class="book-list-item">
+    <h3>${book.title}</h3>
+    <p>By ${book.author}</p>
+    <p>Subject: ${book.subject}</p>
+    <p>Price (SEK): ${book.price}</p>
+    <p>Date printed: ${book.publicationDate}</p>
+    <p>Binding: ${book.binding}</p>
+    <p>Condition: ${book.condition}</p>
+    <p>Notes: ${book.notes}</p>
+    <button class="edit-button" onclick="editBook('${book._id}'); return false">Edit</button>
+    <img src="${book.imgURL}" loading="lazy">
+    </div>
+    </li>`
+    return booklist;
+}
+
 function reloadPage(){
     location.reload(true);
 }
 
 window.updateBook = updateBook;
 window.reloadPage = reloadPage;
-// window.filterDate = filterDate;
-// window.filterValue = filterValue;
-
-
-/*<label for="date-filter">Filter by publication date:</label>
-    <select name="date-filter" id="date-filter" onchange="filterDate()>
-        <option value="">--Date--</option>
-        <option value="1600">Pre-1700</option>
-        <option value="1700">1700s</option>
-        <option value="1800">1800s</option>
-        <option value="1900">1900s and later</option>
-    </select>
-    <label for="value-filter">Filter by value:</label>
-    <select name="value-filter" id="value-filter" onchange="filterValue()>
-        <option value="">--Value--</option>
-        <option value="100">Up to 100</option>
-        <option value="500">100-500</option>
-        <option value="1000">500-1000</option>
-        <option value=">1000">Over 1000</option>
-    </select>*/
