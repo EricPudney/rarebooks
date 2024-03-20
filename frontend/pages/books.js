@@ -44,6 +44,7 @@ export default async function books() {
 }
 
 async function filterSubject() {
+    $("#date-filter").val("")
     const response = await fetch("/api/books");
     const result = await response.json();
     let booklist = "";
@@ -58,6 +59,7 @@ async function filterSubject() {
 window.filterSubject = filterSubject;
 
 async function filterDate() {
+    $("#subject-filter").val("")
     const response = await fetch("/api/books");
     const result = await response.json();
     let booklist = "";
